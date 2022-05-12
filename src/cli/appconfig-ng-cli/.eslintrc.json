@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"]
+      },
+      "plugins": ["@riccardos77/eslint-plugin"],
+      "extends": "plugin:@riccardos77/eslint-plugin/recommended"
+    }
+  ]
+}

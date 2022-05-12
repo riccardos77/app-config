@@ -1,0 +1,111 @@
+global:
+  # -- docker registry url
+  repository:
+
+# -- image pull secrets per download da docker registry con autenticazione , if none specify <imagePullSecrets: []>
+# NB il pull secret cambia da ambiente ad ambiente e DEVE essere
+# riportato nel values template
+imagePullSecrets:
+  - name: azure-cr-credential
+
+replicaCount: 1
+
+image:
+  # imageName: riccardos77-appconfig
+  imageName: riccardos77/app-config
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  devkit: ""
+
+restartPolicy: Always
+dnsPolicy: ClusterFirst
+dnsConfig: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # PROVIDE REASONABLE VALUES FOR REQUESTS AND LIMITS BASED ON APP REQUIREMENT
+  # DON'T PUT DEFAULT OR MINIMAL IN PARTICULAR ON REQUESTS.
+  requests:
+    cpu: "20m"
+    memory: "128Mi"
+  limits:
+    cpu: "20m"
+    memory: "128Mi"
+
+livenessProbe:
+  enabled: false
+
+readinessProbe:
+  enabled: false
+
+# Append additional Environment variables
+# NB: change to the following section will trigger pod restart
+envFrom:
+  ASPNETCORE_ENVIRONMENT: DevContainer
+  ASPNETCORE_URLS: http://*:8080
+
+envFromSecret:
+  # # -- Azure vault client secret (Mapping from secret)
+  # - name: AZURE_CLIENT_SECRET
+  #   secret: azure-secret
+  #   key: client_secret
+  # # -- Azure vault client id (Mapping from secret)
+  # - name: AZURE_CLIENT_ID
+  #   secret: azure-secret
+  #   key: client_id
+  # # -- Azure vault base url (vault name) (Mapping from secret)
+  # - name: AZURE_KEYVAULT_BASE_URL
+  #   secret: azure-secret
+  #   key: keyvault_base_url
+  # # -- Azure vault tenant id (Mapping from secret)
+  # - name: AZURE_TENANT_ID
+  #   secret: azure-secret
+  #   key: tenant_id
+
+# empty annotation section: use it to add other annotations than observability (datadog, prometheus)
+podAnnotations: {}
+# Solo su sviluppo de-commentare la seguente riga per forzare il deployment del pod
+#  rollme: {{ randAlphaNum 5 | quote }}
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 8080
+
+observability:
+  # context path to metrics endpoint
+  path: "/metrics"
+  # port to metrics endpoint
+  port: "2113"
+  datadog:
+    # enable datadog agent scraping
+    enabled: true
+  prometheus:
+    # enable prometheus agent scraping
+    enabled: true
+
+tracing:
+  enabled: false
+  collectorURL: jaeger-collector.monitoraggio.svc:14267
+  sidecar:
+    enabled: false
+    jeagerImage: jaegertracing/jaeger-agent:1.13
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+podSecurityContext: {}
+
+securityContext: {}
+
+nodeSelector: {}

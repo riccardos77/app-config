@@ -1,0 +1,76 @@
+{
+  "id": "#schemaId#",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "properties": {
+    "$schema": { "type": "string" },
+    "appIdentities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "appIdentityId": { "type": "string" },
+          "aadApplicationId": { "type": "string" },
+          "displayName": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": { "type": "string" },
+          "values": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "enabledIdentities": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "nullable": { "type": "boolean" },
+          "schema": { "$ref": "http://json-schema.org/draft-04/schema" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "definitions": {
+    "sys:fileResource": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": ["sys:fileResource"],
+          "default": "sys:fileResource"
+        },
+        "resourceContentType": {
+          "type": "string",
+          "enum": [
+            "application/json",
+            "text/css",
+            "text/html",
+            "text/plain",
+            "text/xml"
+          ]
+        },
+        "resourceFileName": { "type": "string" },
+        "resourceId": { "type": "string" }
+      },
+      "required": [
+        "type",
+        "resourceContentType",
+        "resourceFileName",
+        "resourceId"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

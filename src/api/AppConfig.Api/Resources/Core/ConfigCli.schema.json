@@ -1,0 +1,34 @@
+{
+  "id": "#schemaId#",
+  "$schema": "https://json-schema.org/draft-04/schema",
+  "type": "object",
+  "properties": {
+    "origin": { "$ref": "#/definitions/origin" },
+    "json2ts": { "$ref": "#/definitions/json2ts" }
+  },
+  "definitions": {
+    "origin": {
+      "type": "object",
+      "properties": {
+        "configInstanceUrl": { "type": "string" },
+        "appName": { "type": "string" },
+        "appIdentity": { "type": "string" }
+      },
+      "required": ["configInstanceUrl", "appName", "appIdentity"]
+    },
+    "destination": { "type": "string" },
+    "json2ts": {
+      "type": "object",
+      "properties": {
+        "bannerComment": { "type": "string" },
+        "enableConstEnums": { "type": "boolean" },
+        "ignoreMinAndMaxItems": { "type": "boolean" },
+        "strictIndexSignatures": { "type": "boolean" },
+        "style": {
+          "$ref": "https://json.schemastore.org/prettierrc"
+        },
+        "styleFile": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "src/api",
+      "path": "src\\api"
+    },
+    {
+      "name": "src/cli/appconfig-ng-cli",
+      "path": "src\\cli\\appconfig-ng-cli"
+    },
+    {
+      "name": "deploy",
+      "path": "deploy"
+    }
+  ],
+  "settings": {}
+}
