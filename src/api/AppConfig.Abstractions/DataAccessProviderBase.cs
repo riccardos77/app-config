@@ -10,20 +10,20 @@ public abstract class DataAccessProviderBase<TOptions> : IDataAccessProvider
 
     public object Options => this.options;
 
-    public virtual string GetAppMetaschemaContent(string? appKey)
+    public virtual string GetAppMetaschemaContent()
     {
-        return this.GetContent("Metaschema.json", appKey, false);
+        return this.GetContent("Metaschema.json");
     }
 
-    public virtual string GetAppValuesContent(string? appKey)
+    public virtual string GetAppValuesContent()
     {
-        return this.GetContent("Values.json", appKey, true);
+        return this.GetContent("Values.json");
     }
 
-    public virtual string GetFileContent(string? appKey, string fileName)
+    public virtual string GetFileContent(string fileName)
     {
-        return this.GetContent(Path.Combine("Files", fileName), appKey, true);
+        return this.GetContent(Path.Combine("Files", fileName));
     }
 
-    protected abstract string GetContent(string fileName, string? appKey, bool requireKey);
+    protected abstract string GetContent(string fileName);
 }

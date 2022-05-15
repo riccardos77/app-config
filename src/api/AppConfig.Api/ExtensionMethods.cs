@@ -8,4 +8,9 @@ internal static class ExtensionMethods
     {
         return schemas.Where(s => s.Value.EnabledIdentities.Contains(appIdentity)).ToDictionary(s => s.Key, s => s.Value);
     }
+
+    internal static IConfigurationSection GetFirstChild(this IConfigurationSection configurationSection)
+    {
+        return configurationSection.GetChildren().First();
+    }
 }

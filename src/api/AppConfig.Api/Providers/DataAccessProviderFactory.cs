@@ -12,8 +12,16 @@ public class DataAccessProviderFactory : IDataAccessProviderFactory
         return this.providers[appName];
     }
 
-    public void RegisterProvider(string appName, IDataAccessProvider provider)
+    public void ConfigureProvider(string appName, IConfigurationSection providerSection, Dictionary<string, Type> providerTypes)
     {
-        this.providers[appName] = provider;
+        var providerType = providerTypes[providerSection.Key];
+
+        if (Activator.CreateInstance(providerType) is IDataAccessProvider providerInstance)
+        {
+            providerInstance.AppName = appName;
+            providerSection.Bind(providerInstance.Options);
+
+            this.providers[appName] = providerInstance;
+        }
     }
 }

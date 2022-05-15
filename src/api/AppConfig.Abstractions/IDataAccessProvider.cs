@@ -6,9 +6,9 @@ public interface IDataAccessProvider
 
     object Options { get; }
 
-    string GetAppMetaschemaContent(string? appKey);
+    string GetAppMetaschemaContent();
 
-    string GetAppValuesContent(string? appKey);
+    string GetAppValuesContent();
 
-    string GetFileContent(string? appKey, string fileName);
+    string GetFileContent(string fileName);
 }

@@ -2,10 +2,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Riccardos77.AppConfig.Abstractions;
 
-public interface IDataAccessProviderFactoryBuilder
+public interface IAppDefinitionsBuilder
 {
     IServiceCollection Services { get; }
 
-    IDataAccessProviderFactoryBuilder RegisterProvider<TProvider>(string configSection)
+    IAppDefinitionsBuilder RegisterDataAccessProvider<TProvider>(string providerName)
         where TProvider : IDataAccessProvider, new();
 }
