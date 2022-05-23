@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "appconfig-cli": "src/cli.js"
+    "appconfig": "bin/cli.js"
   },
   "scripts": {
     "build": "gulp build",
-    "debug-cli": "node --inspect dist/src/cli.js"
+    "debug-cli": "npm run build && pause && node --inspect dist/bin/cli.js tests/.appconfig-cli.json"
   },
   "engines": {
     "node": ">=12.0.0"

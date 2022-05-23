@@ -1,0 +1,10 @@
+{
+  "$schema": "http://localhost:8080/config/cli/schema",
+  "origin": {
+    "configInstanceUrl": "http://localhost:8080/config/",
+    "appName": "booking-booking-ri",
+    "appIdentity": "booking-app"
+  },
+  "destination": "./tests/debug-output.ts",
+  "json2ts": {}
+}
