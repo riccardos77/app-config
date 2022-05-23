@@ -29,7 +29,7 @@ public record AppMetaschema
 
     public static AppMetaschema Load(string appName, string appMetaschemaJson)
     {
-        MetaschemaSchema = JSchema.Parse(SchemaResources.AppMetaschemaSchema, MetaschemaSchemaResolver);
+        MetaschemaSchema ??= JSchema.Parse(SchemaResources.AppMetaschemaSchema, MetaschemaSchemaResolver);
 
         var schema = JsonConvert.DeserializeObject<AppMetaschema>(appMetaschemaJson) ?? throw new InvalidOperationException("Error reading conf");
         schema.AppName = appName;
