@@ -92,36 +92,9 @@ public class AppValuesSchemaGenerator
             schemaDefs[confSchema.Key] = confSchema.Value.Schema;
         }
 
-        var schemaTags = InsertSchemaTags(conf);
+        var schemaTags = GeneratorHelpers.InsertSchemaTags(conf, JSchemaType.Object);
         schemaDefs["sys:tags"] = schemaTags;
 
         return schemaTags;
-
-        static JSchema InsertSchemaTags(AppMetaschema conf)
-        {
-            var schemaTags = new JSchema
-            {
-                Type = JSchemaType.Object,
-            };
-
-            if (conf.Tags is not null)
-            {
-                foreach (var confTag in conf.Tags)
-                {
-                    var schemaTag = schemaTags.Properties[confTag.Name] = new JSchema()
-                    {
-                        Type = JSchemaType.String,
-                        AllowAdditionalProperties = false,
-                    };
-
-                    foreach (var confTagValue in confTag.Values)
-                    {
-                        schemaTag.Enum.Add(confTagValue);
-                    }
-                }
-            }
-
-            return schemaTags;
-        }
     }
 }

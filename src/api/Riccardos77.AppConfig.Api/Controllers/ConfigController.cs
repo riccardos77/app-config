@@ -90,6 +90,13 @@ public class ConfigController : ControllerBase
         return this.JsonContent(this.appValuesInstanceSchemaGenerator.Generate(this.LoadAppMetaschema(appName), appIdentity).ToString());
     }
 
+    [HttpGet("apps/{appName}/values/instances/{appIdentity}/schema/tags")]
+    [AllowAnonymous]
+    public IActionResult GetAppValuesInstanceSchemaTags(string appName, string appIdentity)
+    {
+        return this.JsonContent(this.appValuesInstanceSchemaGenerator.GenerateSchemaTags(this.LoadAppMetaschema(appName), appIdentity).ToString());
+    }
+
     [HttpGet("apps/{appName}/values/instances/{appIdentity}/files/{resourceFileName}/{resourceId}")]
     [Authorize]
     public IActionResult GetAppValuesFileInstance(

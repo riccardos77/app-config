@@ -39,6 +39,15 @@ public class AppValuesInstanceSchemaGenerator
         return fullSchema;
     }
 
+    public JSchema GenerateSchemaTags(AppMetaschema metaschema, string appIdentity)
+    {
+        var fullSchema = GeneratorHelpers.InsertSchemaTags(metaschema, null);
+        fullSchema.Title = $"{appIdentity} config tags";
+        fullSchema.SchemaVersion = Constants.JsonSchemaId.JsonDraft04;
+
+        return fullSchema;
+    }
+
     private static void AddProperties(Dictionary<string, ValueSchema> confSchemas, JSchema fullSchema)
     {
         fullSchema.Properties.Add("$schema", new JSchema() { Type = JSchemaType.String });
