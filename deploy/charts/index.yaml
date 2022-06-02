@@ -9,3 +9,11 @@ entries:
       version: 0.1.0
       urls:
         - riccardos77-appconfig-0.1.0.tgz
+    - apiVersion: v2
+      appVersion: 0.1.1
+      description: A Helm chart for AppConfig
+      name: riccardos77-appconfig
+      type: application
+      version: 0.1.1
+      urls:
+        - riccardos77-appconfig-0.1.1.tgz

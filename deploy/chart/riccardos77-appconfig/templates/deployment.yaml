@@ -67,11 +67,11 @@ spec:
           terminationMessagePolicy: File
           volumeMounts:
           - name: configdir
-            mountPath: /etc/config
+            mountPath: {{ .Values.image.mountPath }}
       volumes:
         - name: configdir
           hostPath:
-            path: /mnt/c/health-root/referenceimplementations/booking-booking-ri/chart/appconfig
+            path: {{ .Values.image.hostPath }}
             type: DirectoryOrCreate
       {{- with .Values.nodeSelector }}
       nodeSelector:

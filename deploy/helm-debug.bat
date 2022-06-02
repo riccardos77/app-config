@@ -1,1 +1,1 @@
-helm template testappcfg ./chart > helm-debug.yaml
+helm template --debug -f ./helm-debug-values.yaml testappcfg ./chart/riccardos77-appconfig > helm-debug.yaml

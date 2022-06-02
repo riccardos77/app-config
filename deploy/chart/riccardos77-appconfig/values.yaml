@@ -16,6 +16,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
   devkit: ""
+  # mountPath: /etc/config
+  # hostPath: /mnt/c/mypath
 
 restartPolicy: Always
 dnsPolicy: ClusterFirst
