@@ -10,6 +10,7 @@ internal class GeneratorHelpers
         var schemaTags = new JSchema
         {
             Type = type,
+            AllowAdditionalProperties = false
         };
 
         if (conf.Tags is not null)
