@@ -65,14 +65,19 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
+      {{- if .Values.image.mountPath }}
           volumeMounts:
           - name: configdir
             mountPath: {{ .Values.image.mountPath }}
+      {{- end }}
+      {{- if .Values.image.hostPath }}
       volumes:
         - name: configdir
           hostPath:
             path: {{ .Values.image.hostPath }}
             type: DirectoryOrCreate
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

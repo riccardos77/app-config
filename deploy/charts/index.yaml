@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   riccardos77-appconfig:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2022-06-10T18:23:56.6591116+02:00"
+    description: A Helm chart for AppConfig
+    digest: 36d6d9da764f1c64c8baf5f5683f1bb159b55ed22c2ca6b88007052b5cb2311d
+    name: riccardos77-appconfig
+    type: application
+    urls:
+    - riccardos77-appconfig-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.1
-    created: "2022-06-02T14:52:04.8269197+02:00"
+    created: "2022-06-10T18:23:56.6536001+02:00"
     description: A Helm chart for AppConfig
     digest: 9f1a18af64d3c2a5a6b69215e6c6bb33a03854b8d457427b918ef267959cde1b
     name: riccardos77-appconfig
@@ -13,7 +23,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-06-02T14:52:04.8152284+02:00"
+    created: "2022-06-10T18:23:56.649607+02:00"
     description: A Helm chart for AppConfig
     digest: a250a5f31eed519e286a6641bc41bed01c889f5111b73f3bbec4791e5f81c85f
     name: riccardos77-appconfig
@@ -21,4 +31,4 @@ entries:
     urls:
     - riccardos77-appconfig-0.1.0.tgz
     version: 0.1.0
-generated: "2022-06-02T14:52:04.8141215+02:00"
+generated: "2022-06-10T18:23:56.6486015+02:00"
