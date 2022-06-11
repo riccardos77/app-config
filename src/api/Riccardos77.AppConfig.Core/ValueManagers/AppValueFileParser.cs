@@ -34,7 +34,7 @@ public class AppValueFileParser
         {
             return new TagValue(
                 node.GetAttributes()
-                    .Where(a => a.Name.StartsWith("data-"))
+                    .Where(a => a.Name.StartsWith("data-") && a.Name != "data-section-id")
                     .ToDictionary(a => a.Name.Replace("data-", string.Empty), a => a.Value),
                 node);
         }
@@ -42,14 +42,15 @@ public class AppValueFileParser
 
     private static TagValue[] FilterElements(TagValue[] tagValues, KeyValuePair<string, string> inputTag)
     {
-        var result = tagValues.Where(t => (t.Tags?.TryGetValue(inputTag.Key, out var value) ?? false) && value.ToLower() == inputTag.Value.ToLower()).ToArray();
+        var inputTagKey = inputTag.Key.ToLower();
+        var result = tagValues.Where(t => (t.Tags?.TryGetValue(inputTagKey, out var value) ?? false) && value.ToLower() == inputTag.Value.ToLower()).ToArray();
         if (result.Length > 0)
         {
             return result;
         }
         else
         {
-            return tagValues.Where(t => !t.Tags?.ContainsKey(inputTag.Key) ?? true).ToArray();
+            return tagValues.Where(t => !t.Tags?.ContainsKey(inputTagKey) ?? true).ToArray();
         }
     }
 
