@@ -1,0 +1,3 @@
+{{- with dict "nameSuffix" "-config2" "contentFormat" "text" "filesGlob" "files/config2/**.*" -}}
+{{ include "utility-lib.components.configmap-files" (merge . $) }}
+{{- end -}}

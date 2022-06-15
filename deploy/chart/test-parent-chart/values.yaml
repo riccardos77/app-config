@@ -1,0 +1,22 @@
+global:
+  # -- docker registry url
+  repository: privaterepo.azurecr.io/
+
+appconfig:
+  fullnameOverride: appconfig-in-test
+  # image:
+  #   imageName: renamedimage
+  #   tag: 0.1.0
+  #   repository: "asd/"
+  imagePullSecrets: {}
+  envFrom:
+    AppCatalog__booking-booking-ri__IdentityKeys__booking-app: 1203E20F-B642-4D55-9F58-9719FEFCFC2B
+    AppCatalog__booking-booking-ri__DataProvider__FileSystem__RootPath: /etc/config/booking-booking-ri
+    #Logging__LogLevel__Microsoft.AspNetCore: Debug
+  configFiles:
+    - name: Vol1
+      mountPath: /etc/config
+      hostPath: /mnt/c/myconfig
+    - name: Vol2
+      mountPath: /etc/config2
+      configMapName: test-parent-chart-config2

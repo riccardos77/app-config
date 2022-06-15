@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: 0.1.0
+description: A Helm chart Simulating an App that use AppConfig
+name: test-parent-chart
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: riccardos77-appconfig
+    version: ">= 0.1.0"
+    repository: "file://../riccardos77-appconfig"
+    alias: appconfig
