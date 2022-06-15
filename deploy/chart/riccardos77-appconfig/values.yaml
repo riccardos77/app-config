@@ -5,19 +5,13 @@ global:
 # -- image pull secrets per download da docker registry con autenticazione , if none specify <imagePullSecrets: []>
 # NB il pull secret cambia da ambiente ad ambiente e DEVE essere
 # riportato nel values template
-imagePullSecrets:
-  - name: azure-cr-credential
+imagePullSecrets: {}
 
 replicaCount: 1
 
 image:
-  # imageName: riccardos77-appconfig
   imageName: riccardos77/app-config
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
-  devkit: ""
-  # mountPath: /etc/config
-  # hostPath: /mnt/c/mypath
+  repository: docker.io/
 
 restartPolicy: Always
 dnsPolicy: ClusterFirst

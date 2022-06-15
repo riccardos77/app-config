@@ -1,0 +1,4 @@
+test.yaml
+test.yml
+*.lock
+*.tgz
