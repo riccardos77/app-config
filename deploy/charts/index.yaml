@@ -3,13 +3,13 @@ entries:
   riccardos77-appconfig:
   - apiVersion: v2
     appVersion: 0.3.0
-    created: "2022-08-28T22:25:45.2240916+02:00"
+    created: "2022-08-31T21:54:05.4313585+02:00"
     dependencies:
     - name: riccardos77-helm-utility-lib
       repository: file://../../../../helm-utility-lib/chart
       version: 0.1.0
     description: A Helm chart for AppConfig
-    digest: a3bf52a01ef64398c5a02283371e05f863afe8a8e6483912ee2a5297db075804
+    digest: 761f505c889ca4ba80f69c371045673a78dfd010f7234a70ee96024b70e2d634
     name: riccardos77-appconfig
     type: application
     urls:
@@ -45,4 +45,4 @@ entries:
     urls:
     - riccardos77-appconfig-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-28T22:25:45.2230913+02:00"
+generated: "2022-08-31T21:54:05.4302942+02:00"
