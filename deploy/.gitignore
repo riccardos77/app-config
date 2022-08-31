@@ -167,3 +167,4 @@ cli/hash/hash
 *.exe
 cli/hash/*.sql
 helm-debug.yaml
+charts-temp/*

@@ -1,0 +1,50 @@
+# currentProfile for chart {{ .Chart.Name }}: {{- .Values.valuesProfile -}}
+{{- include "helm-utility-lib.helpers.mergeProfiles" (merge (dict "libName" "") . ) -}}
+
+{{- $podAnnotations := (.Values.podAnnotations | default dict) -}}
+{{- $containerPorts := (.Values.containerPorts | default list) -}}
+{{- $configMapRefs :=  (.Values.configMapRefs | default list) -}}
+{{- $configMapEnv := list -}}
+
+{{- with .Values.envFrom -}}
+{{    $objectName := include "helm-utility-lib.helpers.objectName" (merge (dict "suffix" "-cfgenv") $) }}
+{{    $args := dict "objectName" $objectName "valueFormat" "quoted" "data" . }}
+{{    $configMap := include "helm-utility-lib.components.configmap-data" (merge $args $) }}
+{{    $configMapEnv = append $configMapEnv (dict "objectName" $objectName) }}
+{{    $_ := set $podAnnotations "checksum/cfgenv" ($configMap | sha256sum) }}
+---
+{{    $configMap }}
+{{- end -}}
+
+{{- with (include "helm-utility-lib.helpers.getIfEnabled" .Values.service) | fromYaml -}}
+{{    $containerPorts = append $containerPorts (dict "name" .port.targetPort "protocol" .port.protocol "containerPort" .containerPort) }}
+{{    $objectName := include "helm-utility-lib.helpers.objectName" (merge (dict "suffix" "") $) }}
+{{    $args := dict "objectName" $objectName "data" . }}
+---
+{{    include "helm-utility-lib.components.service" (merge $args $) }}
+{{- end -}}
+
+{{- with true -}}
+{{    $objectName := include "helm-utility-lib.helpers.objectName" (merge (dict "suffix" "") $) }}
+{{    $args := dict "objectName" $objectName "configMapRefs" $configMapRefs "configMapEnv" $configMapEnv "podAnnotations" $podAnnotations "containerPorts" $containerPorts }}
+{{    $deploymentTemplate := (include "helm-utility-lib.components.deployment" (merge $args $)) | fromYaml }}
+{{    $deploymentTemplateOverride := (include "deployment-overrides" $) | fromYaml }}
+---
+{{    (mergeOverwrite $deploymentTemplateOverride $deploymentTemplate) | toYaml }}
+{{- end -}}
+
+
+{{ define "deployment-overrides" }}
+metadata:
+  labels:
+    {{- include "helm-utility-lib.helpers.labels-common" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "helm-utility-lib.helpers.labels-selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm-utility-lib.helpers.labels-selector" . | nindent 8 }}
+        date: "{{ now | unixEpoch }}"
+{{ end }}

@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://values",
+
+  "properties": {
+    "appconfig": {
+      "$ref": "../riccardos77-appconfig/values.schema.json"
+    }
+  }
+}
