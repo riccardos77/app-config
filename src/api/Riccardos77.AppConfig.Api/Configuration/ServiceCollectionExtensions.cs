@@ -1,5 +1,5 @@
+using Riccardos77.AppConfig.Api.Infrastructure;
 using Riccardos77.AppConfig.Configuration.Abstractions;
-using Riccardos77.AppConfig.DataProviders;
 using Riccardos77.AppConfig.DataProviders.Abstractions;
 
 namespace Riccardos77.AppConfig.Api.Configuration;
@@ -11,43 +11,28 @@ public static class ServiceCollectionExtensions
         var appDefinitionBuilder = new Builder(services);
         builder(appDefinitionBuilder);
 
-        var factory = new DataProviderFactory();
-
         configuration
             .GetSection("AppCatalog")
             .GetChildren()
             .ToList()
             .ForEach(appSection =>
             {
-                services.Configure<AppDefinitionOptions>(appSection.Key, appSection);
-
-                var instance = ConfigureProvider(appSection.Key, appSection.GetSection("DataProvider").GetFirstChild(), appDefinitionBuilder.Providers);
-                factory.AddProvider(instance);
+                var appDefinition = new AppDefinitionOptions();
+                services.AddOptions<AppDefinitionOptions>(appSection.Key)
+                    .Bind(appSection)
+                    .Configure(appDef =>
+                    {
+                        var providerSection = appSection.GetSection("DataProvider").GetChildren().First();
+                        var (providerType, optionsType) = appDefinitionBuilder.Providers[providerSection.Key];
+                        appDef.ProviderType = providerType;
+                        appDef.ProviderOptions = Activator.CreateInstance(optionsType);
+                        providerSection.Bind(appDef.ProviderOptions);
+                    });
             });
 
-        services.AddSingleton<IDataProviderFactory>(factory);
+        services.AddSingleton<IDataProviderFactory, DataProviderFactory>();
 
         return services;
-
-        static IDataProvider ConfigureProvider(string appName, IConfigurationSection providerSection, Dictionary<string, Type> providerTypes)
-        {
-            var providerType = providerTypes[providerSection.Key];
-
-            if (Activator.CreateInstance(providerType) is IDataProvider providerInstance)
-            {
-                providerInstance.AppName = appName;
-                providerSection.Bind(providerInstance.Options);
-
-                return providerInstance;
-            }
-
-            throw new InvalidOperationException();
-        }
-    }
-
-    internal static IConfigurationSection GetFirstChild(this IConfigurationSection configurationSection)
-    {
-        return configurationSection.GetChildren().First();
     }
 
     private class Builder : IAppDefinitionsBuilder
@@ -57,14 +42,15 @@ public static class ServiceCollectionExtensions
             this.Services = services;
         }
 
-        public Dictionary<string, Type> Providers { get; } = new();
+        public Dictionary<string, (Type Provider, Type Options)> Providers { get; } = new();
 
         public IServiceCollection Services { get; }
 
-        public IAppDefinitionsBuilder RegisterDataProvider<TProvider>(string providerName)
-            where TProvider : IDataProvider, new()
+        public IAppDefinitionsBuilder RegisterDataProvider<TProvider, TProviderOptions>(string providerName)
+            where TProvider : IDataProvider
+            where TProviderOptions : class, new()
         {
-            this.Providers.Add(providerName, typeof(TProvider));
+            this.Providers.Add(providerName, (typeof(TProvider), typeof(TProviderOptions)));
 
             return this;
         }

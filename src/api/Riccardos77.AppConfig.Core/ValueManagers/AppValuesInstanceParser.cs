@@ -6,9 +6,8 @@ namespace Riccardos77.AppConfig.ValueManagers;
 
 public class AppValuesInstanceParser
 {
-    public string Parse(AppMetaschema metaschema, string valuesContent, string appIdentity, Dictionary<string, string> inputTags)
+    public string Parse(AppMetaschema metaschema, JObject valuesObject, string appIdentity, Dictionary<string, string> inputTags)
     {
-        var jobj = JsonConvert.DeserializeObject<JObject>(valuesContent);
         var result = new Dictionary<string, object?>()
         {
             { "$schema", Constants.JsonSchemaId.AppValuesInstance(metaschema.AppName, appIdentity) },
@@ -16,7 +15,7 @@ public class AppValuesInstanceParser
 
         foreach (var key in metaschema.Schemas.ForIdentity(appIdentity).Select(s => s.Key))
         {
-            var tagValues = GetTagValues(jobj.SelectToken(key));
+            var tagValues = GetTagValues(valuesObject.SelectToken(key));
 
             TagValue[] filteredTagValues;
             if (inputTags.Count > 0)

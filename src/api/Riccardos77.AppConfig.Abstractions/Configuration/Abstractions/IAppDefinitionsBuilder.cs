@@ -7,6 +7,7 @@ public interface IAppDefinitionsBuilder
 {
     IServiceCollection Services { get; }
 
-    IAppDefinitionsBuilder RegisterDataProvider<TProvider>(string providerName)
-        where TProvider : IDataProvider, new();
+    IAppDefinitionsBuilder RegisterDataProvider<TProvider, TProviderOptions>(string providerName)
+        where TProvider : IDataProvider
+        where TProviderOptions : class, new();
 }

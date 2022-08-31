@@ -20,7 +20,7 @@ public class AppValuesInstanceSchemaGenerator
 
         foreach (var item in filteredConfSchemas)
         {
-            if (item.Value.Nullable)
+            if (item.Value.Nullable && item.Value.Schema.OneOf.Count < 2)
             {
                 item.Value.Schema = new JSchema()
                 {

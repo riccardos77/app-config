@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddValueManagers();
 
@@ -25,8 +26,11 @@ builder.Services.ConfigureAppDefinitions(
     {
         providerFactoryBuilder
             .RegisterAzureBlobStorageDataProvider()
-            .RegisterDataProvider<FileSystemDataProvider>("FileSystem");
+            .RegisterDataProvider<FileSystemDataProvider, FileSystemDataProviderOptions>("FileSystem");
     });
+
+builder.Services.AddHostedService<PreloaderBackgroundService>();
+builder.Services.AddAppConfigHealthChecks();
 
 var app = builder.Build();
 
@@ -42,5 +46,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapAppConfigHealthChecks();
 
 app.Run();

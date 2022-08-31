@@ -1,12 +1,30 @@
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.FileProviders;
 using Riccardos77.AppConfig.DataProviders.Abstractions;
 
 namespace Riccardos77.AppConfig.DataProviders;
 
 public class FileSystemDataProvider : DataProviderBase<FileSystemDataProviderOptions>
 {
-    protected override string GetContent(string fileName)
+    private PhysicalFileProvider? physicalFileProvider;
+
+    public FileSystemDataProvider(IMemoryCache memoryCache)
+        : base(memoryCache)
     {
-        return File.ReadAllText(Path.Combine(this.options.RootPath, fileName));
+    }
+
+    protected override ContentAndChangeToken<string> GetContent(string fileName)
+    {
+        if (this.Options is null)
+        {
+            throw new InvalidOperationException("Missing options");
+        }
+
+        var provider = this.physicalFileProvider ??= new PhysicalFileProvider(this.Options.RootPath);
+
+        return new ContentAndChangeToken<string>(
+            File.ReadAllText(Path.Combine(this.Options.RootPath, fileName)),
+            provider.Watch(fileName));
     }
 }
 

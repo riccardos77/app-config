@@ -8,10 +8,10 @@ namespace Riccardos77.AppConfig.Api.Infrastructure;
 
 public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>
 {
-    private readonly IOptionsSnapshot<AppDefinitionOptions> appDefinitionsOptions;
+    private readonly IOptionsMonitor<AppDefinitionOptions> appDefinitionsOptions;
 
     public ApiKeyAuthenticationHandler(
-        IOptionsSnapshot<AppDefinitionOptions> appDefinitionsOptions,
+        IOptionsMonitor<AppDefinitionOptions> appDefinitionsOptions,
         IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,

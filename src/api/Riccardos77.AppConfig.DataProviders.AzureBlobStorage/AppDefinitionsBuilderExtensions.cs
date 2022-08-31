@@ -7,7 +7,7 @@ public static class AppDefinitionsBuilderExtensions
 {
     public static IAppDefinitionsBuilder RegisterAzureBlobStorageDataProvider(this IAppDefinitionsBuilder builder, string providerName = "AzureBlobStorage")
     {
-        builder.RegisterDataProvider<AzureBlobStorageDataProvider>(providerName);
+        builder.RegisterDataProvider<AzureBlobStorageDataProvider, AzureBlobStorageDataProviderOptions>(providerName);
 
         builder.Services.AddAzureClientsCore();
 

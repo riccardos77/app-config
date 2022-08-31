@@ -15,7 +15,7 @@ public class AppValuesSchemaGenerator
 
         foreach (var item in conf.Schemas)
         {
-            if (item.Value.Nullable)
+            if (item.Value.Nullable && item.Value.Schema.OneOf.Count < 2)
             {
                 item.Value.Schema = new JSchema()
                 {

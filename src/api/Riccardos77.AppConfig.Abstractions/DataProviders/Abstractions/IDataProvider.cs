@@ -4,11 +4,11 @@ public interface IDataProvider
 {
     string AppName { get; set; }
 
-    object Options { get; }
+    void SetOptions(object? options);
 
-    string GetAppMetaschemaContent();
+    ContentAndChangeToken<string> GetAppMetaschemaContent();
 
-    string GetAppValuesContent();
+    ContentAndChangeToken<string> GetAppValuesContent();
 
-    string GetFileContent(string fileName);
+    ContentAndChangeToken<string> GetFileContent(string fileName);
 }

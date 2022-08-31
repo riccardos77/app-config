@@ -15,9 +15,9 @@ public record AppMetaschema
         MetaschemaSchemaResolver.Add(Constants.JsonSchemaId.JsonDraft04, SchemaResources.JsonDraft04Schema);
     }
 
-    public static JSchema MetaschemaSchema { get; private set; } = null!;
+    internal static JSchema MetaschemaSchema { get; private set; } = null!;
 
-    public static JSchemaPreloadedResolver MetaschemaSchemaResolver { get; private set; } = null!;
+    internal static JSchemaPreloadedResolver MetaschemaSchemaResolver { get; private set; } = null!;
 
     public string AppName { get; set; } = null!;
 
