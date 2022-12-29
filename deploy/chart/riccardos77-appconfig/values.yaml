@@ -5,7 +5,6 @@ replicaCount: 1
 image:
   imageName: riccardos77/app-config
   repository: docker.io/
-  tag: 0.3.0
   pullPolicy: IfNotPresent
 
 restartPolicy: Always
