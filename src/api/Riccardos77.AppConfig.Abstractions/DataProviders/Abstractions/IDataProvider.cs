@@ -10,5 +10,5 @@ public interface IDataProvider
 
     ContentAndChangeToken<string> GetAppValuesContent();
 
-    ContentAndChangeToken<string> GetFileContent(string fileName);
+    ContentAndChangeToken<byte[]> GetFileContent(string resourceFileName, string resourceId);
 }

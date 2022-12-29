@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Caching.Memory;
 using Riccardos77.AppConfig.DataProviders;
 using Riccardos77.AppConfig.DataProviders.Abstractions;
@@ -19,6 +20,7 @@ public class ConfigController : ControllerBase
     private readonly AppValuesInstanceParser appValuesInstanceParser;
     private readonly AppValueFileParser appValueFileParser;
     private readonly IMemoryCache memoryCache;
+    private static readonly FileExtensionContentTypeProvider contentTypeProvider = new();
 
     public ConfigController(
         IDataProviderFactory dataProviderFactory,
@@ -124,23 +126,30 @@ public class ConfigController : ControllerBase
         string appIdentity,
         string resourceFileName,
         string resourceId,
-        [FromQuery] Dictionary<string, string> queryParams,
-        [FromHeader] string? appKey)
+        [FromQuery] Dictionary<string, string> queryParams)
     {
-        var fileContent = this.dataProviderFactory.GetProvider(appName).GetFileContent(resourceFileName);
+        var fileContent = this.dataProviderFactory.GetProvider(appName).GetFileContent(resourceFileName, resourceId);
 
         if (Path.GetExtension(resourceFileName) == ".html")
         {
-            return this.Content(this.appValueFileParser.ParseHtml(fileContent.Content, resourceId, queryParams), MediaTypeNames.Text.Html);
+            return this.Content(this.appValueFileParser.ParseHtml(fileContent.Content, resourceId, queryParams), GetContentType(resourceFileName));
         }
-        else
-        {
-            return this.BadRequest();
-        }
+
+        return this.File(fileContent.Content, GetContentType(resourceFileName));
     }
 
     private IActionResult JsonContent(string json)
     {
         return this.Content(json, MediaTypeNames.Application.Json);
+    }
+
+    private static string GetContentType(string fileName)
+    {
+        if (!contentTypeProvider.TryGetContentType(fileName, out var contentType))
+        {
+            contentType = "application/octet-stream";
+        }
+
+        return contentType;
     }
 }

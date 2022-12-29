@@ -57,7 +57,8 @@
             "text/css",
             "text/html",
             "text/plain",
-            "text/xml"
+            "text/xml",
+            "image/png"
           ]
         },
         "resourceFileName": { "type": "string" },

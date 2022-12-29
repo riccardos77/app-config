@@ -5,12 +5,14 @@ namespace Riccardos77.AppConfig.ValueManagers;
 public class AppValueFileParser
 {
     public string ParseHtml(
-        string fileContent,
+        byte[] fileContent,
         string sectionId,
         Dictionary<string, string> inputTags)
     {
         var htmlDoc = new HtmlDocument();
-        htmlDoc.LoadHtml(fileContent);
+        using var fileStream = new MemoryStream(fileContent);
+        htmlDoc.Load(fileStream, true);
+
         var sectionTagValues = htmlDoc.DocumentNode
             .SelectNodes($"body/section[@data-section-id='{sectionId}']")
             .Select(h => CreateTagValue(h))

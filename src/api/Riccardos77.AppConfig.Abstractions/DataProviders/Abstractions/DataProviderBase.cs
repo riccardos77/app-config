@@ -30,26 +30,28 @@ public abstract class DataProviderBase<TOptions> : IDataProvider
 
     public virtual ContentAndChangeToken<string> GetAppMetaschemaContent()
     {
-        return this.memoryCache.GetOrCreate(new FileContentCacheKey("metaschema.json"), this.GetContentCacheFactory);
+        return this.memoryCache.GetOrCreate(new FileContentCacheKey("metaschema.json", null), this.GetTextContentCacheFactory);
     }
 
     public virtual ContentAndChangeToken<string> GetAppValuesContent()
     {
-        return this.memoryCache.GetOrCreate(new FileContentCacheKey("values.json"), this.GetContentCacheFactory);
+        return this.memoryCache.GetOrCreate(new FileContentCacheKey("values.json", null), this.GetTextContentCacheFactory);
     }
 
-    public virtual ContentAndChangeToken<string> GetFileContent(string fileName)
+    public virtual ContentAndChangeToken<byte[]> GetFileContent(string resourceFileName, string resourceId)
     {
-        return this.memoryCache.GetOrCreate(new FileContentCacheKey(fileName), this.GetContentCacheFactory);
+        return this.memoryCache.GetOrCreate(new FileContentCacheKey(resourceFileName, resourceId), this.GetBinaryContentCacheFactory);
     }
 
-    protected abstract ContentAndChangeToken<string> GetContent(string fileName);
+    protected abstract ContentAndChangeToken<string> GetTextContent(string fileName, string? resourceId);
 
-    private ContentAndChangeToken<string> GetContentCacheFactory(ICacheEntry cacheEntry)
+    protected abstract ContentAndChangeToken<byte[]> GetBinaryContent(string fileName, string? resourceId);
+
+    private ContentAndChangeToken<string> GetTextContentCacheFactory(ICacheEntry cacheEntry)
     {
         if (cacheEntry.Key is FileContentCacheKey key)
         {
-            var contentAndToken = this.GetContent(key.FileName);
+            var contentAndToken = this.GetTextContent(key.FileName, key.ResourceId);
 
             cacheEntry.AddExpirationToken(contentAndToken.ChangeToken);
             return contentAndToken;
@@ -60,5 +62,20 @@ public abstract class DataProviderBase<TOptions> : IDataProvider
         }
     }
 
-    private record FileContentCacheKey(string FileName);
+    private ContentAndChangeToken<byte[]> GetBinaryContentCacheFactory(ICacheEntry cacheEntry)
+    {
+        if (cacheEntry.Key is FileContentCacheKey key)
+        {
+            var contentAndToken = this.GetBinaryContent(key.FileName, key.ResourceId);
+
+            cacheEntry.AddExpirationToken(contentAndToken.ChangeToken);
+            return contentAndToken;
+        }
+        else
+        {
+            throw new InvalidOperationException("Invalid cache key");
+        }
+    }
+
+    private record FileContentCacheKey(string FileName, string? ResourceId);
 }

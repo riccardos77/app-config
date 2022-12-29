@@ -12,7 +12,7 @@ public class AzureBlobStorageDataProvider : DataProviderBase<AzureBlobStorageDat
     {
     }
 
-    protected override ContentAndChangeToken<string> GetContent(string fileName)
+    protected override ContentAndChangeToken<string> GetTextContent(string fileName, string? resourceId)
     {
         throw new NotImplementedException();
 
@@ -25,5 +25,10 @@ public class AzureBlobStorageDataProvider : DataProviderBase<AzureBlobStorageDat
         //    new StorageSharedKeyCredential(accountName, accountKey));
 
         // return client.DownloadContent().Value.Content.ToString();
+    }
+
+    protected override ContentAndChangeToken<byte[]> GetBinaryContent(string fileName, string? resourceId)
+    {
+        throw new NotImplementedException();
     }
 }
