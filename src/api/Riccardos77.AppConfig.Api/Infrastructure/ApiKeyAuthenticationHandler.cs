@@ -26,6 +26,11 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var authKey = this.Context.Request.Headers.Authorization.ToString().Split(" ").Last();
+        if (string.IsNullOrEmpty(authKey))
+        {
+            authKey = this.Context.Request.Query["AppKey"];
+        }
+
         var appName = this.Context.GetRouteValue("AppName") as string;
         var appIdentity = this.Context.GetRouteValue("AppIdentity") as string;
 
